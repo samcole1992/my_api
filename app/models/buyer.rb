@@ -18,6 +18,10 @@ class Buyer < ApplicationRecord
         BuyerMailer.welcome_mail(self).deliver_now unless Rails.env.production?
       end
 
+      def rating
+          BuyerReview.where(buyer_id: self.id).average(:rating)
+        end
+
     private
 
       def generate_password(size=4)

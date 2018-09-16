@@ -10,22 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180914225238) do
+ActiveRecord::Schema.define(version: 20180915203944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bids", force: :cascade do |t|
-    t.integer  "amount",     null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "amount",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "supplier_id"
+    t.integer  "buyer_id"
+    t.boolean  "fulfilled"
+    t.index ["buyer_id"], name: "index_bids_on_buyer_id", using: :btree
+    t.index ["supplier_id"], name: "index_bids_on_supplier_id", using: :btree
   end
 
   create_table "buyer_reviews", force: :cascade do |t|
-    t.integer  "rating",     null: false
-    t.text     "body",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "rating",      null: false
+    t.text     "body",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "buyer_id"
+    t.integer  "supplier_id"
+    t.index ["buyer_id"], name: "index_buyer_reviews_on_buyer_id", using: :btree
+    t.index ["supplier_id"], name: "index_buyer_reviews_on_supplier_id", using: :btree
   end
 
   create_table "buyers", force: :cascade do |t|
@@ -43,19 +52,37 @@ ActiveRecord::Schema.define(version: 20180914225238) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "order_id"
+    t.integer  "buyer_id"
+    t.integer  "supplier_id"
+    t.index ["buyer_id"], name: "index_notifications_on_buyer_id", using: :btree
+    t.index ["order_id"], name: "index_notifications_on_order_id", using: :btree
+    t.index ["supplier_id"], name: "index_notifications_on_supplier_id", using: :btree
   end
 
   create_table "offers", force: :cascade do |t|
-    t.integer  "amount",     null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "amount",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "buyer_id"
+    t.integer  "supplier_id"
+    t.boolean  "fulfilled"
+    t.index ["buyer_id"], name: "index_offers_on_buyer_id", using: :btree
+    t.index ["supplier_id"], name: "index_offers_on_supplier_id", using: :btree
   end
 
   create_table "orders", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.boolean  "buyer_fulfilled"
+    t.boolean  "supplier_fulfilled"
+    t.boolean  "fulfilled"
+    t.integer  "supplier_id"
+    t.integer  "buyer_id"
+    t.index ["buyer_id"], name: "index_orders_on_buyer_id", using: :btree
+    t.index ["supplier_id"], name: "index_orders_on_supplier_id", using: :btree
   end
 
   create_table "products", force: :cascade do |t|
@@ -63,13 +90,22 @@ ActiveRecord::Schema.define(version: 20180914225238) do
     t.integer  "amount",     null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "bid_id"
+    t.integer  "offer_id"
+    t.integer  "price"
+    t.index ["bid_id"], name: "index_products_on_bid_id", using: :btree
+    t.index ["offer_id"], name: "index_products_on_offer_id", using: :btree
   end
 
   create_table "supplier_reviews", force: :cascade do |t|
-    t.integer  "rating",     null: false
-    t.text     "body",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "rating",      null: false
+    t.text     "body",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "buyer_id"
+    t.integer  "supplier_id"
+    t.index ["buyer_id"], name: "index_supplier_reviews_on_buyer_id", using: :btree
+    t.index ["supplier_id"], name: "index_supplier_reviews_on_supplier_id", using: :btree
   end
 
   create_table "suppliers", force: :cascade do |t|
@@ -86,4 +122,17 @@ ActiveRecord::Schema.define(version: 20180914225238) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "bids", "suppliers"
+  add_foreign_key "buyer_reviews", "buyers"
+  add_foreign_key "buyer_reviews", "suppliers"
+  add_foreign_key "notifications", "buyers"
+  add_foreign_key "notifications", "orders"
+  add_foreign_key "notifications", "suppliers"
+  add_foreign_key "offers", "buyers"
+  add_foreign_key "orders", "buyers"
+  add_foreign_key "orders", "suppliers"
+  add_foreign_key "products", "bids"
+  add_foreign_key "products", "offers"
+  add_foreign_key "supplier_reviews", "buyers"
+  add_foreign_key "supplier_reviews", "suppliers"
 end

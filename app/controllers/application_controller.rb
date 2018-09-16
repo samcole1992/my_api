@@ -27,6 +27,11 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def my_bids
+        return current_user.bids
+        return Invoice.order("id DESC").where("anonymous_id=?", anonymous_id)
+      end
+
     private
 
 
