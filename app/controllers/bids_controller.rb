@@ -23,6 +23,7 @@ class BidsController < ApplicationController
   def create
     @bid = Bid.new(bid_params)
     @bid.buyer = current_user
+    binding.pry
     if @bid.save
       render json: BidSerializer.new(@bid).serialized_json
 
@@ -31,11 +32,8 @@ class BidsController < ApplicationController
     end
   end
 
-  def edit
-
-  end
   def update
-    @bid = Bid.new(bid_params)
+    @bid = Bid.find(params[:id])
     @bid.buyer = current_user
     if @bid.update_attributes(bid_params)
       render json: BidSerializer.new(@bid).serialized_json
@@ -52,7 +50,7 @@ class BidsController < ApplicationController
   private
 
   def bid_params
-    params.require(:bid).permit(:id, :, :state, :zip, :allergies, :cookie_type, :cookie_amount, :payment, :completion, :fulfilled)
+    params.require(:bid).permit(:id, :buyer_id, :supplier_id, :updated_at, :created_at, :deleted_at, :fulfilled)
   end
 
 end

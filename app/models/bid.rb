@@ -1,5 +1,5 @@
 class Bid < ApplicationRecord
-
+acts_as_paranoid
   belongs_to :buyer
   has_many :products
   has_one :order

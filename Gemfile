@@ -10,6 +10,7 @@ gem 'jwt'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'fast_jsonapi'
 gem 'pry'
+gem 'acts_as_paranoid'
 group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'

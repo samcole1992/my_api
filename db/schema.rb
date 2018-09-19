@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180915203944) do
+ActiveRecord::Schema.define(version: 20180918211744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bids", force: :cascade do |t|
-    t.integer  "amount",      null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "supplier_id"
     t.integer  "buyer_id"
     t.boolean  "fulfilled"
+    t.datetime "deleted_at"
     t.index ["buyer_id"], name: "index_bids_on_buyer_id", using: :btree
     t.index ["supplier_id"], name: "index_bids_on_supplier_id", using: :btree
   end
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20180915203944) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "valid_token"
+    t.decimal  "rating"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -63,12 +64,12 @@ ActiveRecord::Schema.define(version: 20180915203944) do
   end
 
   create_table "offers", force: :cascade do |t|
-    t.integer  "amount",      null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "buyer_id"
     t.integer  "supplier_id"
     t.boolean  "fulfilled"
+    t.datetime "deleted_at"
     t.index ["buyer_id"], name: "index_offers_on_buyer_id", using: :btree
     t.index ["supplier_id"], name: "index_offers_on_supplier_id", using: :btree
   end
@@ -115,6 +116,7 @@ ActiveRecord::Schema.define(version: 20180915203944) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "valid_token"
+    t.decimal  "rating"
   end
 
   create_table "users", force: :cascade do |t|
