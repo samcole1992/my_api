@@ -16,7 +16,6 @@ class BuyerSignupController < ApplicationController
 
   			if @buyer.save
           token = Token.issue( { buyer_id: @buyer.id, valid_token: @buyer.valid_token } )
-          binding.pry
 
   				# render json: @buyer, token: token, status: :created
           # render json: @buyer, token: token, status: :created

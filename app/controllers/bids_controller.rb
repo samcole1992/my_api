@@ -23,7 +23,6 @@ class BidsController < ApplicationController
   def create
     @bid = Bid.new(bid_params)
     @bid.buyer = current_user
-    binding.pry
     if @bid.save
       render json: BidSerializer.new(@bid).serialized_json
 

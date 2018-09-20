@@ -58,12 +58,10 @@ class ApplicationController < ActionController::API
 
         # when authenticating user, check user_id and also valid_token (stored in database)
         # valid token changes when users change their passwords
-        binding.pry
         if decoded["buyer_id"].present?
           return false unless decoded.has_key?("valid_token")
           @current_user = Buyer.find_by_id_and_valid_token(decoded['buyer_id'], decoded['valid_token'])
-          binding.pry
-
+  
           return false unless @current_user
           return true
         elsif decoded["supplier_id"].present?
