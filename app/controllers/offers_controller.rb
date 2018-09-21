@@ -3,7 +3,6 @@ class OffersController < ApplicationController
 
   def index
 
-    @offers = Offer.all
     @offers = current_user.offers
 
     render json: OfferSerializer.new(@offers).serialized_json
@@ -16,8 +15,10 @@ class OffersController < ApplicationController
     render json: OfferSerializer.new(@offer).serialized_json
 
   end
-  def new
+  def all
+    @offers = Offer.all
 
+    render json: OfferSerializer.new(@offers).serialized_json
   end
 
   def create

@@ -3,8 +3,16 @@ Rails.application.routes.draw do
 
   resources :buyers
   resources :suppliers
-  resources :bids
-  resources :offers
+  resources :bids do
+    resources :products, shallow: true
+    get 'all', on: :collection
+
+  end
+  resources :offers do
+    resources :products, shallow: true
+    get 'all', on: :collection
+
+  end
   resources :products
   resources :orders
   resources :buyer_reviews
@@ -22,7 +30,7 @@ Rails.application.routes.draw do
   delete '/buyer_signout' => 'buyer_signin#destroy', as: 'buyer_signout'
 
   post '/buyer_signup' => 'buyer_signup#create', as: 'buyer_signup'
-  
+
   post '/guest' => 'guest#create', as: 'guest'
 
 end

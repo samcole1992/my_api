@@ -12,15 +12,18 @@ class SupplierSignupController < ApplicationController
 
   			@supplier = Supplier.new(supplier_params)
 
-        token = Token.issue( { supplier_id: @supplier.id, valid_token: SecureRandom.hex } )
-        @supplier.valid_token = token
+        @supplier.valid_token = SecureRandom.hex
+
   			if @supplier.save
 
+          token = Token.issue( { supplier_id: @supplier.id, valid_token: @supplier.valid_token } )
+          options = {}
+          options[:meta] = { token: token }
 
-  				# render json: @supplier, token: token, status: :created
-          render json: SupplierSerializer.new(@supplier).serialized_json
+          # @supplier.send_welcome_mail
 
-  				# @supplier.send_welcome_mail
+          render json: SupplierSerializer.new(@supplier, options).serialized_json
+
 
   			else
 

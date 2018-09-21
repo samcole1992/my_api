@@ -3,7 +3,6 @@ class BidsController < ApplicationController
 
   def index
 
-    @bids = Bid.all
     @bids = current_user.bids
 
     render json: BidSerializer.new(@bids).serialized_json
@@ -16,8 +15,10 @@ class BidsController < ApplicationController
     render json: BidSerializer.new(@bid).serialized_json
 
   end
-  def new
+  def all
+    @bids = Bid.all
 
+    render json: BidSerializer.new(@bids).serialized_json
   end
 
   def create

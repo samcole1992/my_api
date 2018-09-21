@@ -17,14 +17,13 @@ class BuyerSignupController < ApplicationController
   			if @buyer.save
           token = Token.issue( { buyer_id: @buyer.id, valid_token: @buyer.valid_token } )
 
-  				# render json: @buyer, token: token, status: :created
-          # render json: @buyer, token: token, status: :created
           options = {}
           options[:meta] = { token: token }
 
+          # @buyer.send_welcome_mail
+
           render json: BuyerSerializer.new(@buyer, options).serialized_json
 
-  				# @buyer.send_welcome_mail
 
   			else
 
