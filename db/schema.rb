@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180918211744) do
+ActiveRecord::Schema.define(version: 20180922051501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20180918211744) do
     t.integer  "buyer_id"
     t.boolean  "fulfilled"
     t.datetime "deleted_at"
+    t.datetime "date_issued"
     t.index ["buyer_id"], name: "index_bids_on_buyer_id", using: :btree
     t.index ["supplier_id"], name: "index_bids_on_supplier_id", using: :btree
   end
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(version: 20180918211744) do
     t.integer  "supplier_id"
     t.boolean  "fulfilled"
     t.datetime "deleted_at"
+    t.datetime "date_issued"
     t.index ["buyer_id"], name: "index_offers_on_buyer_id", using: :btree
     t.index ["supplier_id"], name: "index_offers_on_supplier_id", using: :btree
   end
@@ -82,7 +84,11 @@ ActiveRecord::Schema.define(version: 20180918211744) do
     t.boolean  "fulfilled"
     t.integer  "supplier_id"
     t.integer  "buyer_id"
+    t.integer  "bid_id"
+    t.integer  "offer_id"
+    t.index ["bid_id"], name: "index_orders_on_bid_id", using: :btree
     t.index ["buyer_id"], name: "index_orders_on_buyer_id", using: :btree
+    t.index ["offer_id"], name: "index_orders_on_offer_id", using: :btree
     t.index ["supplier_id"], name: "index_orders_on_supplier_id", using: :btree
   end
 
@@ -131,7 +137,9 @@ ActiveRecord::Schema.define(version: 20180918211744) do
   add_foreign_key "notifications", "orders"
   add_foreign_key "notifications", "suppliers"
   add_foreign_key "offers", "buyers"
+  add_foreign_key "orders", "bids"
   add_foreign_key "orders", "buyers"
+  add_foreign_key "orders", "offers"
   add_foreign_key "orders", "suppliers"
   add_foreign_key "products", "bids"
   add_foreign_key "products", "offers"
