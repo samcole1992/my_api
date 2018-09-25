@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get 'all', on: :collection
 
   end
-  resources :products
+  # resources :products
   resources :orders
   resources :buyer_reviews
   resources :suppliers_reviews
