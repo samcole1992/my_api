@@ -2,7 +2,7 @@ class BidsController < ApplicationController
   prepend_before_action :authorize
 
   def index
-
+binding.pry
     @bids = current_user.bids
 
     render json: BidSerializer.new(@bids).serialized_json
@@ -16,6 +16,7 @@ class BidsController < ApplicationController
 
   end
   def all
+
     @bids = Bid.all
 
     render json: BidSerializer.new(@bids).serialized_json
@@ -44,7 +45,12 @@ class BidsController < ApplicationController
   end
 
   def destroy
-
+    @bid = Bid.find(params[:id])
+    if @bid.destroy
+      render json: BidSerializer.new(@bid).serialized_json
+        else
+          render json: @bid.errors, status: :unprocessable_entity
+        end
   end
 
   private

@@ -44,7 +44,12 @@ class OffersController < ApplicationController
   end
 
   def destroy
-
+    @offer = Offer.find(params[:id])
+    if @offer.destroy
+      render json: OfferSerializer.new(@offer).serialized_json
+        else
+          render json: @offer.errors, status: :unprocessable_entity
+        end
   end
 
   private
