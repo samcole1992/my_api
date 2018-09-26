@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   prepend_before_action :authorize
   def index
-    @orders = Order.all
     @orders = current_user.orders
 
     render json: OrderSerializer.new(@orders).serialized_json
@@ -17,7 +16,6 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    @order.buyer = current_user
     if @order.save
       render json: OrderSerializer.new(@order).serialized_json
 
@@ -28,7 +26,6 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-    @order.buyer = current_user
     if @order.update_attributes(order_params)
       render json: OrderSerializer.new(@order).serialized_json
 
@@ -44,6 +41,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:id, :buyer_id, :supplier_id, :updated_at, :created_at, :deleted_at, :fulfilled, :buyer_fulfilled, :supplier_fulfilled)
+    params.require(:order).permit(:id, :buyer_id, :supplier_id,:buyer_notes, :supplier_notes, :updated_at, :created_at, :deleted_at, :fulfilled, :buyer_fulfilled, :supplier_fulfilled, :bid_id, :offer_id)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180925221232) do
+ActiveRecord::Schema.define(version: 20180926051454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,9 @@ ActiveRecord::Schema.define(version: 20180925221232) do
     t.integer  "buyer_id"
     t.integer  "bid_id"
     t.integer  "offer_id"
+    t.datetime "deleted_at"
+    t.text     "buyer_notes"
+    t.text     "supplier_notes"
     t.index ["bid_id"], name: "index_orders_on_bid_id", using: :btree
     t.index ["buyer_id"], name: "index_orders_on_buyer_id", using: :btree
     t.index ["offer_id"], name: "index_orders_on_offer_id", using: :btree
