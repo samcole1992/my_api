@@ -2,7 +2,6 @@ class BidsController < ApplicationController
   prepend_before_action :authorize
 
   def index
-binding.pry
     @bids = current_user.bids
 
     render json: BidSerializer.new(@bids).serialized_json
