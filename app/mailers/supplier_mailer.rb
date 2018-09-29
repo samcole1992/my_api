@@ -6,7 +6,6 @@ class SupplierMailer < ApplicationMailer
 
     recipients = []
 
-    # emailova adresa uzivatele
     recipients << user.email
 
     mail(to: recipients, subject: 'Welcome!')
